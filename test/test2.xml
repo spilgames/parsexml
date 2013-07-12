@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<envelope>
+    <envelope2>
+        <authenticate>
+            <hash>hash</hash>
+            <password>password</password>
+        </authenticate>
+        <modify>
+            <gender>m</gender>
+            <dob>1988-03-14</dob>
+            <empty></empty>
+        </modify>
+        <alsoEmpty/>
+    </envelope2>
+</envelope>
