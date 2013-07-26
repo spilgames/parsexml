@@ -23,7 +23,6 @@ Simplifications from the original version
 * parse tags as atoms (because if you have an unbounded number of tag names,
   then you are in trouble anyway).
 * don't wrap text values into lists
-* use empty binaries for empty node values (TODO: review this idea)
 
 Usage
 -----
@@ -62,8 +61,8 @@ Example
                 {modify, [
                     {gender, <<"m">>},
                     {dob, <<"1988-03-14">>},
-                    {empty, <<>>}
+                    {empty, []}
                 ]},
-                {alsoEmpty, <<>>}
+                {alsoEmpty, []}
             ]}
         ]}

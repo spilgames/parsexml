@@ -41,15 +41,11 @@ tag(<<"<", Bin/binary>>) ->
   case TagHeader1 of
     <<TagHeader:Len/binary, "/">> ->
       Tag = tag_header(TagHeader),
-      {{to_atom(Tag), <<>>}, Rest1};
+      {{to_atom(Tag), []}, Rest1};
     TagHeader ->
       Tag = tag_header(TagHeader),
-      case tag_content(Rest1, Tag) of
-        {[], Rest2} ->
-            {{to_atom(Tag), <<>>}, Rest2};
-        {Content, Rest2} ->
-            {{to_atom(Tag), Content}, Rest2}
-      end
+      {Content, Rest2} = tag_content(Rest1, Tag),
+      {{to_atom(Tag), Content}, Rest2}
   end.
 
 tag_header(TagHeader) ->

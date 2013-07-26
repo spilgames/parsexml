@@ -5,29 +5,29 @@
 
 parse_test_() ->
   [
-  ?_assertEqual({html, <<>>},
+  ?_assertEqual({html, []},
     parsexml:parse(<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<html></html>\n">>))
-  ,?_assertEqual({html, <<>>},
+  ,?_assertEqual({html, []},
     parsexml:parse(<<"\n\n\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<html></html>\n">>))
-  ,?_assertEqual({html, <<>>},
+  ,?_assertEqual({html, []},
     parsexml:parse(<<"\n<html></html>\n">>))
-  ,?_assertEqual({html, <<>>},
+  ,?_assertEqual({html, []},
     parsexml:parse(<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<html ></html>\n">>))
-  ,?_assertEqual({html, <<>>},
+  ,?_assertEqual({html, []},
     parsexml:parse(<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<html xmlns=\"w3c\"></html>\n">>))
-  ,?_assertEqual({html, <<>>},
+  ,?_assertEqual({html, []},
     parsexml:parse(<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<html xmlns=\"w3c\" ></html>\n">>))
-  ,?_assertEqual({html, <<>>},
+  ,?_assertEqual({html, []},
     parsexml:parse(<<"<html xmlns='w3c' />\n">>))
-  ,?_assertEqual({html, <<>>},
+  ,?_assertEqual({html, []},
     parsexml:parse(<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<html/>\n">>))
-  ,?_assertEqual({html, <<>>},
+  ,?_assertEqual({html, []},
     parsexml:parse(<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<html />\n">>))
-  ,?_assertEqual({html, <<>>},
+  ,?_assertEqual({html, []},
     parsexml:parse(<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<html k=\"v\"/>\n">>))
-  ,?_assertEqual({html, <<>>},
+  ,?_assertEqual({html, []},
     parsexml:parse(<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<html k=\"v\" />\n">>))
-  ,?_assertEqual({html, <<>>},
+  ,?_assertEqual({html, []},
     parsexml:parse(<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE some_dtd SYSTEM \"example.dtd\">\n<html k=\"v\" />\n">>))
   ].
 
@@ -36,7 +36,7 @@ parse2_test() ->
   ?assertEqual(
     {'p:program', [
       {'p:day', [
-        {'p:item', <<>>},
+        {'p:item', []},
         {'p:item', <<"Morning &lt;chan&gt;,…">>}
       ]}
     ]},
@@ -55,9 +55,9 @@ parse3_test() ->
             {modify, [
                 {gender, <<"m">>},
                 {dob, <<"1988-03-14">>},
-                {empty, <<>>}
+                {empty, []}
             ]},
-            {alsoEmpty, <<>>}
+            {alsoEmpty, []}
         ]}
     ]},
     parsexml:parse(Bin)
