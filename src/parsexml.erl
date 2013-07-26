@@ -1,6 +1,16 @@
 -module(parsexml).
 -export([parse/1]).
 
+-define(IS_WHITESPACE(Char),
+    Char == $ orelse
+    Char == $\n orelse
+    Char == $\r orelse
+    Char == $\t
+).
+
+-type sxml() :: {atom(), binary() | [sxml()]}.
+
+-spec parse(binary()) -> sxml().
 parse(Bin) when is_binary(Bin) ->
   Bin1 = skip_declaration(Bin),
   {Tag, Rest} = tag(Bin1),
@@ -13,17 +23,16 @@ skip_declaration(<<"<?xml", Bin/binary>>) ->
   skip_declaration(Rest);
 
 skip_declaration(<<"<!", Bin/binary>>) ->
-	[_,Rest] = binary:split(Bin, <<">">>),
-	trim(Rest);
+    [_,Rest] = binary:split(Bin, <<">">>),
+    trim(Rest);
 
 skip_declaration(<<"<",_/binary>> = Bin) -> Bin;
 skip_declaration(<<_,Bin/binary>>) -> skip_declaration(Bin).
 
-trim(<<" ",Bin/binary>>) -> trim(Bin);
-trim(<<"\n",Bin/binary>>) -> trim(Bin);
-trim(<<"\t",Bin/binary>>) -> trim(Bin);
-trim(<<"\r",Bin/binary>>) -> trim(Bin);
-trim(Bin) -> Bin.
+trim(<<Blank,Bin/binary>>) when ?IS_WHITESPACE(Blank) ->
+    trim(Bin);
+trim(Bin) ->
+    Bin.
 
 tag(<<"<", Bin/binary>>) ->
   [TagHeader1,Rest1] = binary:split(Bin, <<">">>),
@@ -43,13 +52,10 @@ tag(<<"<", Bin/binary>>) ->
       end
   end.
 
-to_atom(Tag) ->
-    binary_to_atom(Tag, latin1).
-
 tag_header(TagHeader) ->
     hd(binary:split(TagHeader, [<<" ">>])).
 
-tag_content(<<Blank,Bin/binary>>, Parent) when Blank == $  orelse Blank == $\n orelse Blank == $\r orelse Blank == $\t ->
+tag_content(<<Blank,Bin/binary>>, Parent) when ?IS_WHITESPACE(Blank) ->
   tag_content(Bin, Parent);
 tag_content(<<"</", Bin1/binary>>, Parent) ->
   Len = size(Parent),
@@ -62,3 +68,6 @@ tag_content(<<"<",_/binary>> = Bin, Parent) ->
 tag_content(Bin, Parent) ->
   [Text, Rest] = binary:split(Bin, <<"</",Parent/binary,">">>),
   {Text,Rest}.
+
+to_atom(Tag) ->
+    binary_to_atom(Tag, latin1).
