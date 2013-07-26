@@ -1,6 +1,6 @@
 {application, parsexml,
  [
-  {description, ""},
+  {description, "Super simple XML parser"},
   {vsn, git},
   {registered, []},
   {applications, [
